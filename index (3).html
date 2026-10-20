@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Obstetricia Arcade 2.0 · M. J. Castillo Yupanqui · UNSAAC</title><style>
+:root{--bg:#050818;--c:#0a1238;--t:#eaf8ff;--m:#9fe9ff;--a:#22e5ff;--k:#ff2fa8;--bd:#22e5ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+body{background:#03040c;color:var(--t);font-family:system-ui,Segoe UI,Roboto,sans-serif;min-height:100vh;padding:10px;display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 18% 8%,#22e5ff44,transparent 45%),radial-gradient(ellipse at 88% 18%,#ff2fa844,transparent 45%),radial-gradient(ellipse at 50% 108%,#22e5ff66,transparent 52%),linear-gradient(#03040c,#070b24);animation:pu 9s ease-in-out infinite alternate}
+body::after{content:"";position:fixed;left:8%;right:8%;bottom:-9vh;height:22vh;z-index:-1;border-radius:50%;background:radial-gradient(ellipse,#22e5ff77,transparent 70%);filter:blur(12px)}
+@keyframes pu{to{filter:hue-rotate(35deg) brightness(1.15)}}
+#top{width:min(900px,100%);display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+#hud{color:var(--a);font-size:13px;font-weight:700;text-align:right;text-shadow:0 0 8px #22e5ff88}
+#stage{width:min(900px,100%)}
+canvas{width:100%;display:block;border-radius:14px;background:#0b1220;touch-action:none;box-shadow:0 0 0 2px #22e5ff,0 0 28px #22e5ffaa,0 0 64px #ff2fa855}
+button{font:inherit;cursor:pointer;color:inherit}
+.b{background:linear-gradient(135deg,#0b1a52,#2b0d52);border:1px solid #22e5ffaa;border-radius:12px;padding:12px 14px;font-weight:600;text-align:left;box-shadow:inset 0 0 12px #22e5ff22;transition:.15s}
+.b:hover:not(:disabled){border-color:#ff2fa8;box-shadow:0 0 16px #ff2fa8aa}
+.g{background:#15803d!important;color:#fff!important;border-color:#4ade80!important}.r{background:#b91c1c!important;color:#fff!important;border-color:#f87171!important}
+#menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.card{border-radius:16px;padding:16px;cursor:pointer;transition:.15s}
+.card:hover{transform:translateY(-3px) scale(1.02)}
+.card i{font-style:normal;font-size:36px;display:block;filter:drop-shadow(0 0 10px #fff8)}.card small{color:var(--m)}.card b{font-size:16px}
+#modal{position:fixed;inset:0;background:#02030acc;display:none;align-items:center;justify-content:center;padding:14px;z-index:9}
+.p{background:linear-gradient(160deg,#0c1646ee,#0a0b2cee);border:1px solid #22e5ffaa;border-radius:16px;padding:20px;width:min(640px,100%);display:grid;gap:10px;box-shadow:0 0 26px #22e5ff44,0 0 60px #ff2fa822}
+.o{display:grid;gap:8px}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+#gr{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;touch-action:none;user-select:none;width:min(520px,100%)}
+.cl{aspect-ratio:1;display:grid;place-items:center;background:#0b1a52;border:1px solid #22e5ff33;border-radius:6px;font-weight:700;font-size:clamp(11px,3vw,20px)}
+.s{background:var(--a)!important;color:#000}.f{background:#16a34a!important;color:#fff}
+#wl div{padding:3px 0;color:var(--m)}#wl .d{color:#22c55e;text-decoration:line-through}
+#mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}#mg .b{min-height:78px;text-align:center;font-size:clamp(11px,2.8vw,15px)}
+#lights{display:flex;justify-content:space-around;width:100%;position:fixed;top:0;left:0;z-index:5;pointer-events:none}
+#lights i{width:8px;height:8px;border-radius:50%;margin-top:3px;animation:bl 1.6s infinite alternate}
+@keyframes bl{from{opacity:.2}to{opacity:1;box-shadow:0 0 10px 3px currentColor}}
+.in{padding:12px;border-radius:12px;border:1px solid #22e5ff99;background:#050a26;color:var(--t);font:inherit;width:100%}
+.dfs{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}.dfs .b{padding:8px 12px}.on{border-color:#ff2fa8!important;box-shadow:0 0 12px #ff2fa8}
+#top>b{background:linear-gradient(90deg,#22e5ff,#ff2fa8,#22e5ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:18px;filter:drop-shadow(0 0 6px #22e5ff88)}
+.neon{background:linear-gradient(90deg,#22e5ff,#ff2fa8);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:30px;filter:drop-shadow(0 0 8px #22e5ff88)}
+@keyframes fl{to{transform:translateY(-60px) scale(1.8);opacity:0}}
+.im{display:grid;place-items:center;margin:2px auto}
+.cg{display:grid;gap:6px;width:min(420px,100%);margin:8px auto}
+.cl2{aspect-ratio:1;display:grid;place-items:center;padding:4px;text-align:center;min-height:56px}
+.pb{display:grid;gap:2px;width:min(340px,100%);aspect-ratio:1;background:#0008;border:2px solid #22e5ff;border-radius:10px;overflow:hidden;box-shadow:0 0 20px #22e5ff66}
+.sl2{border:1px dashed #22e5ff55;cursor:pointer}.sl2.ok{border:0}
+.gd{width:84px;aspect-ratio:1;border:2px solid #ff2fa8;border-radius:8px;background-size:cover;box-shadow:0 0 12px #ff2fa8aa}
+.tr{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;margin-top:4px}
+.pc{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:26px;background:#0b1a4a;border:1px solid #ff2fa8aa;cursor:pointer}
+.pc.un{border-color:#22e5ff;box-shadow:0 0 12px #22e5ff}.pc.sel{outline:3px solid #fde047}
+</style></head><body><div id="lights"></div>
+<div id="top"><button class="b" id="back" style="display:none">◀ Menú</button><b>🩺 Obstetricia Arcade ✨</b><button class="b" id="mu" style="padding:6px 10px">🔇</button><span id="hud"></span></div>
+<div id="stage"></div><div id="modal"></div>
+<script>
+const $=s=>document.querySelector(s),R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,rf=(a,b)=>Math.random()*(b-a)+a,sh=a=>[...a].sort(()=>Math.random()-.5),K={};
+addEventListener('keydown',e=>{K[e.key.toLowerCase()]=1;if(e.key.startsWith('Arrow')||e.key==' ')e.preventDefault()});
+addEventListener('keyup',e=>K[e.key.toLowerCase()]=0);
+let S={p:0,b:{},f:3,h:3,u:'',l:''},raf=0,T=0,qt,busy=0,AC,RC=null,DF=2,MS=null,UQ=new Set;const D=()=>[.7,1,1.3,1.7][DF-1];
+try{S.b=JSON.parse(localStorage.oa||'{}')}catch(e){}
+const LV=['Estudiante','Interna','Obstetra','Obstetra Experta','Maestra de Obstetricia'];
+const hud=()=>$('#hud').innerHTML=(S.u?'👤 '+S.u+(S.l?' · 📍 '+S.l:'')+'<br>':'')+LV[Math.min(4,S.p/200|0)]+' · ⭐ '+S.p+' · 50/50: '+S.f;
+const add=n=>{S.p+=n;hud()};
+const best=(g,v)=>{if(v>(S.b[g]||0)){S.b[g]=v;try{localStorage.oa=JSON.stringify(S.b)}catch(e){}}};
+function snd(f,d=.12,t='sine',v){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v||.05;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+const ok=()=>{snd(660);setTimeout(()=>snd(880),90)},ko=()=>snd(160,.3,'sawtooth');
+const stop=()=>{RC=null;if(MS){MS.getTracks().forEach(z=>z.stop());MS=null}T++;busy=0;cancelAnimationFrame(raf);clearInterval(qt);$('#modal').style.display='none'};
+const endp=(h,fn,l)=>{T++;cancelAnimationFrame(raf);$('#stage').innerHTML=`<div class="p" style="margin:30px auto;text-align:center"><small>${S.u?S.u+(S.l?" · "+S.l:""):""}</small>${h}<button class="b" style="text-align:center" id="ag">${l||'Jugar de nuevo'}</button></div>`;$('#ag').onclick=fn};
+const B=`Anatomía|¿Qué capa del útero se desprende en la menstruación?|Endometrio|Miometrio|Perimetrio|Cérvix
+Anatomía|¿Qué capa muscular forma la pared del útero?|Miometrio|Endometrio|Perimetrio|Parametrio
+Anatomía|¿Dónde ocurre normalmente la fecundación?|Ampolla de la trompa de Falopio|Cavidad uterina|Vagina|Ovario
+Anatomía|El cordón umbilical normal contiene|2 arterias y 1 vena|1 arteria y 2 venas|2 arterias y 2 venas|1 arteria y 1 vena
+Anatomía|¿Qué estructura une al feto con la placenta?|Cordón umbilical|Saco amniótico|Decidua|Cérvix
+Anatomía|¿Qué órgano produce los óvulos?|Ovario|Útero|Trompa|Vagina
+Anatomía|Tipo de pelvis más favorable para el parto vaginal|Ginecoide|Androide|Antropoide|Platipeloide
+Fisiología|Hormona que detecta la prueba de embarazo|β-hCG|Insulina|Oxitocina|Prolactina
+Fisiología|Hormona que desencadena las contracciones del parto|Oxitocina|Prolactina|Progesterona|Cortisol
+Fisiología|Hormona responsable de producir la leche|Prolactina|Oxitocina|Estrógeno|hCG
+Fisiología|Hormona de la eyección (bajada) de la leche|Oxitocina|Prolactina|FSH|Insulina
+Fisiología|En un ciclo de 28 días la ovulación ocurre cerca del día|14|7|21|28
+Fisiología|Duración del embarazo a término|37 a 41 semanas|20 a 25 semanas|28 a 32 semanas|45 a 50 semanas
+Fisiología|El primer trimestre llega hasta la semana|13|20|28|40
+Fisiología|Vitamina que previene defectos del tubo neural|Ácido fólico|Vitamina C|Vitamina K|Niacina
+Parto|Dilatación cervical completa|10 cm|4 cm|6 cm|8 cm
+Parto|Periodo que termina con la expulsión de la placenta|Alumbramiento|Dilatación|Expulsivo|Puerperio
+Parto|Periodo entre dilatación completa y nacimiento del bebé|Expulsivo|Dilatación|Alumbramiento|Puerperio
+Parto|La episiotomía es|Una incisión en el periné|Una incisión abdominal|El corte del cordón|La rotura de membranas
+Parto|Pérdida de sangre que define hemorragia posparto vaginal|500 mL o más|100 mL|200 mL|50 mL
+Parto|Fármaco de primera línea para prevenir hemorragia posparto|Oxitocina|Paracetamol|Amoxicilina|Insulina
+Parto|El partograma sirve para|Vigilar el progreso del trabajo de parto|Medir el peso fetal|Diagnosticar diabetes|Calcular la FUR
+Parto|Presentación fetal más frecuente|Cefálica|Podálica|Transversa|Oblicua
+Parto|Regla de Naegele para la FPP|FUR + 7 días − 3 meses|FUR + 14 días|FUR − 7 días + 3 meses|FUR + 40 días
+Neonato|Puntaje máximo del test de Apgar|10|5|8|12
+Neonato|El Apgar se evalúa al minuto y a los|5 minutos|2 minutos|15 minutos|30 minutos
+Neonato|Primera deposición del recién nacido|Meconio|Vérnix|Calostro|Lanugo
+Neonato|La lactancia materna exclusiva dura|6 meses|2 meses|4 meses|12 meses
+Neonato|Primera leche, rica en anticuerpos|Calostro|Meconio|Vérnix|Leche madura
+Neonato|El contacto piel con piel inmediato favorece|Termorregulación y apego|Medir la talla|Poner vacunas|Secar el cordón
+Clínica|Hipertensión y proteinuria después de la semana 20|Preeclampsia|Diabetes gestacional|Placenta previa|Anemia
+Clínica|Fármaco para prevenir convulsiones en la eclampsia|Sulfato de magnesio|Insulina|Oxitocina|Ibuprofeno
+Clínica|Placenta que cubre el orificio cervical interno|Placenta previa|Desprendimiento|Placenta acreta|Placenta succenturiada
+Clínica|Sangrado con dolor intenso y útero hipertónico sugiere|Desprendimiento prematuro de placenta|Placenta previa|Cistitis|Amenaza de parto
+Clínica|Embarazo implantado fuera de la cavidad uterina|Ectópico|Molar|Gemelar|Postérmino
+Clínica|Prueba de tamizaje de diabetes gestacional|Prueba de tolerancia oral a glucosa|Hemoglobina|Urocultivo|Ecografía
+Clínica|Controles prenatales mínimos según el MINSA|6|2|3|12
+Historia|Médico que impuso el lavado de manos contra la fiebre puerperal|Ignaz Semmelweis|Louis Pasteur|Joseph Lister|Robert Koch
+Biología|Célula sexual femenina madura|Óvulo|Espermatozoide|Cigoto|Mórula
+Biología|Célula que resulta de la fecundación|Cigoto|Mórula|Gástrula|Óvulo
+Biología|La meiosis produce gametos con|23 cromosomas|46 cromosomas|92 cromosomas|12 cromosomas
+Biología|Cromosomas sexuales de la mujer|XX|XY|XO|YY
+Biología|Capa germinal que origina el sistema nervioso|Ectodermo|Mesodermo|Endodermo|Trofoblasto
+Biología|El blastocisto se implanta en el endometrio hacia el día|6 a 7|1 a 2|14 a 15|20 a 21
+Biología|Hormona que mantiene el endometrio durante el embarazo|Progesterona|Insulina|Adrenalina|Tiroxina
+Biología|Grupo sanguíneo donante universal de glóbulos rojos|O negativo|AB positivo|A positivo|B positivo
+Biología|Hay riesgo de incompatibilidad Rh si la madre es|Rh negativo y el feto Rh positivo|Rh positivo y el feto Rh negativo|Ambos Rh positivo|Ambos Rh negativo
+Anatomía|Región entre la vagina y el ano|Periné|Ombligo|Pubis|Sacro
+Anatomía|El cuerpo lúteo se forma en el|Ovario|Útero|Trompa|Placenta
+Anatomía|Hueso posterior de la pelvis|Sacro|Fémur|Esternón|Húmero
+Anatomía|Parte superior y más ancha del útero|Fondo|Istmo|Cérvix|Orificio externo
+Historia|Hipócrates es conocido como el|Padre de la medicina|Inventor del fórceps|Descubridor de la penicilina|Creador del Apgar
+Historia|El fórceps obstétrico fue desarrollado por la familia|Chamberlen|Pasteur|Fleming|Apgar
+Historia|Virginia Apgar fue una|Anestesióloga que creó el test|Obstetra que inventó el fórceps|Enfermera que halló la penicilina|Matrona que creó el partograma
+Historia|La fiebre puerperal disminuyó gracias al|Lavado de manos|Rayos X|Ultrasonido|Uso de la cesárea
+Historia|El primer bebé de probeta (1978) fue|Louise Brown|Dolly|Virginia Apgar|Florence Nightingale
+Historia|Antiguo oficio que acompañaba los partos, precursor de la obstetricia|Partera|Boticaria|Cirujana|Anestesista`.split('\n').map(l=>l.split('|'));
+const CS=`Caso|Gestante de 34 semanas con PA 160/110, cefalea intensa y visión de lucecitas. ¿Primera conducta?|Referir de inmediato y dar sulfato de magnesio|Reposo en casa|Paracetamol y control en 1 semana|Dieta sin sal
+Caso|Tras el alumbramiento hay sangrado profuso y útero blando. ¿Qué haces primero?|Masaje uterino y uterotónico|Esperar 1 hora|Dar agua|Cortar el cordón
+Caso|Gestante de 36 semanas con sangrado rojo vivo e indoloro. ¿Qué evitas?|El tacto vaginal|Tomar la PA|Canalizar una vía|Monitorear la FCF
+Caso|Recién nacido: llanto fuerte, FC 130, movimiento activo, rosado, tose. Apgar aproximado|9 a 10|5|3|0 a 2
+Caso|Amenorrea, dolor pélvico intenso de un lado y sangrado leve. Sospechas|Embarazo ectópico|Gastritis|Cólico menstrual|Infección urinaria
+Caso|Madre con grietas en los pezones al amamantar. Primera medida|Corregir agarre y posición|Suspender la lactancia|Dar fórmula|Cremas fuertes
+Caso|FCF de 90 lpm sostenida en trabajo de parto. Interpretas|Bradicardia fetal, alerta|Normal|Taquicardia fetal|Variabilidad aumentada
+Caso|Gestante de 28 semanas con mucha sed, orina en exceso y glucosa en ayunas de 130 mg/dL. Sospechas|Diabetes gestacional|Preeclampsia|Anemia|Placenta previa
+Caso|Gestante con Hb de 9 g/dL, palidez y cansancio. Indicas|Suplemento de hierro y control|Reposo absoluto|Cesárea|Antibióticos
+Caso|Gestante con ardor al orinar y fiebre. Solicitas|Urocultivo|Radiografía|Test de Apgar|Tacto vaginal
+Caso|Gestante de 41 semanas sin trabajo de parto. Conducta|Evaluar y programar inducción|Esperar 3 semanas más|Dar oxitocina en casa|Alta sin control
+Caso|Recién nacido que no llora ni respira. Primera acción|Secar, estimular y abrir vía aérea|Darle fórmula|Pesarlo|Bañarlo
+Caso|Gestante de 18 semanas con sangrado leve y dolor tipo cólico, cuello cerrado. Sospechas|Amenaza de aborto|Parto en curso|Placenta previa total|Cistitis
+Caso|Puérpera con fiebre de 39 °C, loquios fétidos y útero doloroso. Sospechas|Endometritis puerperal|Mastitis|Anemia|Cistitis
+Caso|Gestante de 32 semanas que no siente movimientos fetales hace 24 horas. Primera conducta|Evaluar la FCF y referir para monitoreo fetal|Esperar al día siguiente|Indicar reposo en casa|Darle algo dulce y esperar
+Caso|Madre Rh negativo cuyo recién nacido es Rh positivo. Tras el parto se administra|Inmunoglobulina anti-D|Hierro|Oxitocina|Insulina
+Caso|Recién nacido con ictericia en las primeras 24 horas de vida. Conducta|Referir para evaluación urgente|Observar en casa|Solo baños de sol|Suspender la lactancia
+Caso|Gestante sana de 30 semanas con PA 110/70 pregunta si puede hacer ejercicio. Respondes|Sí, actividad física moderada|Reposo absoluto|No debe caminar|Solo ejercicios en cama`.split('\n').map(l=>l.split('|'));
+function ask(q,done,h){const m=$('#modal'),o=sh(q.slice(2)),W=q[2],tk=T;let t=[25,20,15,10][DF-1],d=0;
+m.innerHTML=`<div class="p"><small>${h||(q[0]=='Caso'?'🩺 Guardia · caso clínico':q[0])} · ⏱ <b id="tt">${t}</b>s</small>${q.img?`<div class="im">${q.img}</div>`:''}<h3>${q[1]}</h3><div class="o">${o.map(x=>`<button class="b">${x}</button>`).join('')}</div><button class="b" id="f" style="text-align:center">50/50 (${S.f})</button></div>`;m.style.display='flex';
+const bs=[...m.querySelectorAll('.o .b')];
+const fin=b=>{if(d)return;d=1;clearInterval(qt);const c=!!b&&b.textContent==W;bs.forEach(x=>{x.disabled=1;if(x.textContent==W)x.classList.add('g')});if(b&&!c)b.classList.add('r');c?ok():ko();setTimeout(()=>{if(tk!=T)return;m.style.display='none';done(c)},1100)};
+bs.forEach(b=>b.onclick=()=>fin(b));
+$('#f').onclick=()=>{if(d||!S.f)return;S.f--;hud();$('#f').textContent='50/50 ('+S.f+')';sh(bs.filter(b=>b.textContent!=W)).slice(0,2).forEach(b=>{b.disabled=1;b.style.opacity=.3})};
+qt=setInterval(()=>{$('#tt').textContent=--t;if(t<=0)fin(null)},1000)}
+function qrun(gen,key,h,nl){const L=gen(),n=L.length;let i=0,c=0,st=0,bs=0,sc=0;
+const nx=()=>{if(i>=n){best(key,sc);return endp(`<h2>Nota: ${Math.round(c/n*20)}/20 ${c/n>=.9?'🏆':''}</h2><p>${c}/${n} correctas · ${sc} pts · mejor racha ${bs}</p>${c/n>=.7||!nl?'':'<p>Necesitas 70% para pasar de nivel</p>'}`,c/n>=.7&&nl?nl:()=>qrun(gen,key,h,nl),c/n>=.7&&nl?'Siguiente nivel ▶':'Reintentar')}
+$('#stage').innerHTML=`<div class="p" style="margin:auto"><h3>${h}</h3><p>Pregunta ${i+1}/${n} · Racha 🔥${st} · ${sc} pts</p></div>`;
+ask(L[i],r=>{i++;if(r){c++;st++;bs=Math.max(bs,st);const g=10+Math.min(st,5)*3;sc+=g;add(g)}else st=0;nx()})};nx()}
+const QL=[['Anatomía'],['Fisiología','Biología'],['Parto'],['Neonato','Clínica'],null],quiz=(n=1)=>qrun(()=>{const c=[2,2,3,3,4][n-1];return sh([...Array.from({length:8-c},()=>nq(QL[n-1])),...sh(CS).slice(0,c)])},'quiz','⚡ Quiz y Guardia · Nivel '+n+'/5',n<5?()=>quiz(n+1):null);
+function cv(){const c=document.createElement('canvas');c.width=900;c.height=560;$('#stage').innerHTML='';$('#stage').append(c);const P={x:450,y:300,d:0,m:0},f=e=>{const r=c.getBoundingClientRect();P.x=(e.clientX-r.left)*900/r.width;P.y=(e.clientY-r.top)*560/r.height;P.m=e.pointerType=='mouse'};c.onpointermove=f;c.onpointerdown=e=>{f(e);P.d=1};c.onpointerup=()=>P.d=0;return[c.getContext('2d'),P]}
+function loop(u){const tk=T;let l=performance.now();const f=t=>{const dt=Math.min(.05,(t-l)/1000);l=t;if(!busy)u(dt);if(tk==T)raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)}
+const rr=(x,X,Y,w,h,r,c)=>{x.fillStyle=c;x.beginPath();x.roundRect(X,Y,w,h,r);x.fill()};
+const tx=(x,s,X,Y,c,z=20,a='left')=>{x.fillStyle=c;x.font='bold '+z+'px system-ui';x.textAlign=a;x.fillText(s,X,Y)};
+function car(x,X,Y,c,am,t){[[-30,-38],[22,-38],[-30,22],[22,22]].forEach(w=>rr(x,X+w[0],Y+w[1],8,18,3,'#0a0a0a'));rr(x,X-25,Y-42,50,84,10,c);rr(x,X-19,Y-26,38,16,4,'#9bd1ff');rr(x,X-19,Y+20,38,10,3,'#7fb2de');
+if(am){x.fillStyle='#ef4444';x.fillRect(X-4,Y-2,8,22);x.fillRect(X-11,Y+5,22,8);const s=Math.sin(t*14)>0;rr(x,X-22,Y-36,18,6,2,s?'#ef4444':'#fff');rr(x,X+4,Y-36,18,6,2,s?'#fff':'#3b82f6')}}
+function amb(n=1){const[x,P]=cv();const LX=[283,450,617],AY=470;let a={x:450,i:0},ob=[],pk=[],lv=3,got=0,t=0,sc=0,ro=0,ls=0,sp=260;
+loop(dt=>{t+=dt;sp=(260+t*6)*D()*(1+.15*(n-1));ro=(ro+sp*dt)%80;
+const mv=(K.arrowleft||K.a?-1:0)+(K.arrowright||K.d?1:0);
+if(P.d)a.x+=(P.x-a.x)*Math.min(1,dt*10);else a.x+=mv*480*dt;
+a.x=Math.max(240,Math.min(660,a.x));a.i=Math.max(0,a.i-dt);
+if((ls-=dt)<=0){ls=Math.max(.45,1.1-t*.01);ob.push({x:LX[R(0,2)],y:-60,c:`hsl(${R(0,360)},60%,45%)`})}
+if(Math.random()<dt*.55)pk.push({x:LX[R(0,2)],y:-60});
+ob.forEach(o=>o.y+=sp*dt);pk.forEach(o=>o.y+=sp*dt);ob=ob.filter(o=>o.y<640);pk=pk.filter(o=>o.y<640);
+for(const o of ob)if(!a.i&&Math.abs(o.x-a.x)<46&&Math.abs(o.y-AY)<78){a.i=2.5;o.y=900;busy=1;ask(nq(),r=>{busy=0;if(r){sc+=20;add(20)}else lv--;if(lv<=0){best('amb',sc);endp(`<h2>🚑 Fin del turno</h2><p>${got} gestantes llevadas · ${sc} pts</p>`,()=>amb(n))}},'💥 ¡Choque! Responde para seguir');break}
+for(const o of pk)if(Math.abs(o.x-a.x)<46&&Math.abs(o.y-AY)<60){o.y=900;got++;sc+=50;add(50);ok();if(got>=10){best('amb',sc+lv*50);return endp(`<h2>🏥 ¡10 gestantes a salvo!</h2><p>Nota: ${lv==3?20:lv==2?18:16}/20 · ${sc+lv*50} pts</p>`,n<5?()=>amb(n+1):()=>amb(1),n<5?'Siguiente nivel ▶':'Jugar otra vez')}}
+x.fillStyle='#14532d';x.fillRect(0,0,900,560);x.fillStyle='#1f2937';x.fillRect(200,0,500,560);
+x.fillStyle='#e5e7eb';x.fillRect(200,0,5,560);x.fillRect(695,0,5,560);
+for(let y=-80+ro;y<560;y+=80){x.fillStyle='#facc15';x.fillRect(364,y,6,40);x.fillRect(530,y,6,40);x.fillStyle='#166534';x.beginPath();x.arc(80,y+20,26,0,7);x.arc(810,y+60,26,0,7);x.fill()}
+pk.forEach(o=>{x.fillStyle='#fbbf2466';x.beginPath();x.arc(o.x,o.y,34,0,7);x.fill();x.font='42px serif';x.textAlign='center';x.fillText('🤰',o.x,o.y+14)});
+ob.forEach(o=>car(x,o.x,o.y,o.c));
+if(a.i<=0||Math.floor(t*10)%2)car(x,a.x,AY,'#f8fafc',1,t);
+rr(x,10,10,230,74,10,'#0008');tx(x,'N'+n+'/5 · 🤰 '+got+'/10',22,40,'#fbbf24');tx(x,'❤'.repeat(lv)+' · '+sc+' pts',22,70,'#f87171',16);
+if(t<4)tx(x,'← → / A D o arrastra · recoge 🤰 y esquiva autos',450,120,'#fff',18,'center')})}
+function esp(n=1){const[x,P]=cv(),WW=1600,WH=2200,egg={x:800,y:170,r:55},CAT=['Anatomía','Biología','Historia'],rn=()=>({x:rf(40,WW-40),y:rf(330,WH-120)});let p={x:800,y:2080},cx=0,cy=0,en=[],nu=[],lv=3,E=0,t=0,sc=0,inv=0,mg=0;
+for(let i=0;i<34;i++)nu.push(rn());for(let i=0;i<6+n*3;i++)en.push({...rn(),v:rf(55,85)*D()*(1+n*.08),a:rf(0,6.28)});
+loop(dt=>{t+=dt;inv=Math.max(0,inv-dt);mg=Math.max(0,mg-dt);
+if(P.d||P.m){const dx=P.x+cx-p.x,dy=P.y+cy-p.y,d=Math.hypot(dx,dy);if(d>4){const s=Math.min(d*5,380)/d;p.x+=dx*s*dt;p.y+=dy*s*dt}}
+p.x+=((K.arrowright||K.d?1:0)-(K.arrowleft||K.a?1:0))*380*dt;p.y+=((K.arrowdown||K.s?1:0)-(K.arrowup||K.w?1:0))*380*dt;
+p.x=Math.max(20,Math.min(WW-20,p.x));p.y=Math.max(20,Math.min(WH-20,p.y));cx=Math.max(0,Math.min(WW-900,p.x-450));cy=Math.max(0,Math.min(WH-560,p.y-280));
+en.forEach(e=>{const d=Math.hypot(p.x-e.x,p.y-e.y);if(d<380){const a=Math.atan2(p.y-e.y,p.x-e.x);e.x+=Math.cos(a)*e.v*1.4*dt;e.y+=Math.sin(a)*e.v*1.4*dt}else{e.a+=rf(-1,1)*dt*2;e.x+=Math.cos(e.a)*e.v*.5*dt;e.y+=Math.sin(e.a)*e.v*.5*dt}e.x=Math.max(20,Math.min(WW-20,e.x));e.y=Math.max(260,Math.min(WH-20,e.y))});
+nu.forEach((q,i)=>{if(Math.hypot(q.x-p.x,q.y-p.y)<30){nu[i]=rn();E=Math.min(5,E+1);sc+=10;add(10);snd(900,.08)}});
+for(const e of en)if(!inv&&Math.hypot(e.x-p.x,e.y-p.y)<36){Object.assign(e,rn());inv=2.5;busy=1;ask(nq(CAT),r=>{busy=0;if(r){sc+=20;add(20)}else lv--;if(lv<=0){best('esp',sc);endp(`<h2>🧬 No llegó al óvulo</h2><p>Nivel ${n} · ${sc} pts</p>`,()=>esp(n))}},'⚪ Nivel '+n+' · Un leucocito te atrapó');break}
+if(Math.hypot(egg.x-p.x,egg.y-p.y)<egg.r+14){if(E>=5){sc+=100+lv*50;add(150);best('esp',n);return n<5?endp(`<h2>🎉 ¡Nivel ${n} superado!</h2><p>${sc} pts</p>`,()=>esp(n+1),'Siguiente nivel ▶'):endp('<h2>🏆 ¡Fecundación completa en los 5 niveles!</h2><p>Nota: 20/20</p>',()=>esp(1))}p.y+=100;mg=2}
+x.save();x.translate(-cx,-cy);const g=x.createLinearGradient(0,0,0,WH);g.addColorStop(0,'#7a1f6a');g.addColorStop(.4,'#5b1240');g.addColorStop(.75,'#4a0e2e');g.addColorStop(1,'#2a0a1f');x.fillStyle=g;x.fillRect(0,0,WW,WH);
+for(let i=0;i<60;i++){x.fillStyle='#ffffff0d';x.beginPath();x.arc((i*263)%WW,(i*377+t*8)%WH,20+i%5*10,0,7);x.fill()}
+[['TROMPA DE FALOPIO',260],['ÚTERO',1000],['CUELLO UTERINO',1600],['VAGINA',2140]].forEach(l=>tx(x,l[0],800,l[1],'#f9a8d4aa',30,'center'));
+const gr=x.createRadialGradient(egg.x,egg.y,10,egg.x,egg.y,egg.r);gr.addColorStop(0,'#fecdd3');gr.addColorStop(1,'#e11d48');
+for(let i=0;i<24;i++){const a=i/24*6.283;x.fillStyle='#fda4af';x.beginPath();x.arc(egg.x+Math.cos(a)*(egg.r+6),egg.y+Math.sin(a)*(egg.r+6),9,0,7);x.fill()}
+x.fillStyle=gr;x.beginPath();x.arc(egg.x,egg.y,egg.r,0,7);x.fill();tx(x,'ÓVULO',egg.x,egg.y+5,'#fff',15,'center');
+nu.forEach(q=>{x.fillStyle='#facc15';x.shadowColor='#facc15';x.shadowBlur=12;x.beginPath();x.arc(q.x,q.y,9+Math.sin(t*6+q.x)*2,0,7);x.fill()});x.shadowBlur=0;
+en.forEach(e=>{x.fillStyle='#f1f5f9';x.beginPath();x.arc(e.x,e.y,22,0,7);x.fill();x.fillStyle='#8b5cf6';x.beginPath();x.arc(e.x-5,e.y-3,11,0,7);x.arc(e.x+7,e.y+5,8,0,7);x.fill()});
+if(!inv||Math.floor(t*10)%2){x.strokeStyle='#e2e8f0';x.lineWidth=5;x.lineCap='round';x.beginPath();x.moveTo(p.x,p.y+12);for(let i=1;i<=9;i++)x.lineTo(p.x+Math.sin(t*14-i)*i*1.6,p.y+12+i*6);x.stroke();x.fillStyle='#f8fafc';x.beginPath();x.ellipse(p.x,p.y,13,17,0,0,7);x.fill();x.fillStyle='#38bdf8';x.beginPath();x.ellipse(p.x,p.y-6,9,9,0,0,7);x.fill()}
+x.restore();
+rr(x,10,10,250,96,10,'#0009');tx(x,'Nivel '+n+'/5 · '+'❤'.repeat(lv),22,36,'#f87171',17);tx(x,'Energía',22,62,'#fde047',14);rr(x,22,70,200,14,6,'#334155');rr(x,22,70,E*40,14,6,'#facc15');tx(x,sc+' pts',22,100,'#e2e8f0',14);
+rr(x,780,10,110,150,8,'#000a');const mp=(a,b,c,r)=>{x.fillStyle=c;x.beginPath();x.arc(785+a*.062,14+b*.062,r,0,7);x.fill()};en.forEach(e=>mp(e.x,e.y,'#8b5cf6',2));mp(egg.x,egg.y,'#fb7185',5);mp(p.x,p.y,'#fff',4);
+if(mg>0)tx(x,'¡Necesitas 5 de energía (🟡) para penetrar!',450,300,'#fff',22,'center');
+if(t<5)tx(x,'Nada hacia arriba hasta el óvulo · come 🟡, evita ⚪',450,540,'#fff',17,'center')})}
+function sopa(n=1){const N=[8,10,12,12][n-1],WD=['UTERO','OVARIO','PLACENTA','CERVIX','TROMPA','VAGINA','EMBARAZO','PARTO','FETO','LACTANCIA','OXITOCINA'].filter(w=>w.length<=N).sort((a,b)=>a.length-b.length).slice(0,[4,6,8,11][n-1]),D=[[0,1],[1,0],[1,1],[-1,1],[0,-1],[-1,0],[-1,-1],[1,-1]],g=[...Array(N)].map(()=>Array(N).fill('')),t0=Date.now();
+WD.forEach(w=>{for(let k=0;k<500;k++){const d=D[R(0,n==1?1:n==2?3:Math.random()<.5?3:7)],r=R(0,N-1),c=R(0,N-1),e=[r+d[0]*(w.length-1),c+d[1]*(w.length-1)];if(e[0]<0||e[0]>=N||e[1]<0||e[1]>=N)continue;let o=1;for(let i=0;i<w.length;i++){const q=g[r+d[0]*i][c+d[1]*i];if(q&&q!=w[i])o=0}if(!o)continue;for(let i=0;i<w.length;i++)g[r+d[0]*i][c+d[1]*i]=w[i];break}});
+g.forEach(r=>r.forEach((v,j)=>{if(!v)r[j]=String.fromCharCode(65+R(0,25))}));
+$('#stage').innerHTML=`<div class="row"><div id="gr" style="grid-template-columns:repeat(${N},1fr)">${g.map((r,i)=>r.map((v,j)=>`<div class="cl" data-r="${i}" data-c="${j}">${v}</div>`).join('')).join('')}</div><div id="wl"><b>Nivel ${n}/4 · encuentra:</b>${WD.map(w=>`<div id="w${w}">${w}</div>`).join('')}</div></div>`;
+const G=$('#gr'),cs=[...G.children],fd=new Set();let s=null,sel=[];
+const cell=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.dataset&&el.dataset.r!=null?[+el.dataset.r,+el.dataset.c]:null};
+const paint=to=>{cs.forEach(c=>c.classList.remove('s'));sel=[];if(!s||!to)return;const dr=to[0]-s[0],dc=to[1]-s[1];if(dr&&dc&&Math.abs(dr)!=Math.abs(dc))return;const n=Math.max(Math.abs(dr),Math.abs(dc));for(let i=0;i<=n;i++){const q=[s[0]+Math.sign(dr)*i,s[1]+Math.sign(dc)*i];sel.push(q);cs[q[0]*N+q[1]].classList.add('s')}};
+G.onpointerdown=e=>{s=cell(e);paint(s)};G.onpointermove=e=>{if(s)paint(cell(e))};
+G.onpointerup=()=>{const w=sel.map(q=>g[q[0]][q[1]]).join(),W=w.replace(/,/g,''),V=[...W].reverse().join(''),f=WD.find(z=>!fd.has(z)&&(z==W||z==V));
+if(f){fd.add(f);sel.forEach(q=>cs[q[0]*N+q[1]].classList.add('f'));$('#w'+f).className='d';ok();add(30);if(fd.size==WD.length){const sec=(Date.now()-t0)/1000|0;best('sopa',Math.max(0,600-sec));setTimeout(()=>endp(`<h2>🔤 ¡Completada en ${sec}s!</h2><p>Nota: ${sec<150?20:sec<240?18:16}/20</p>`,n<4?()=>sopa(n+1):()=>sopa(1),n<4?'Siguiente nivel ▶':'Jugar otra vez'),600)}}else if(sel.length>1)ko();s=null;paint(null)}}
+const SETS=[['Periodos del parto',['Dilatación','Expulsivo','Alumbramiento','Puerperio inmediato']],['Desarrollo prenatal',['Fecundación','Segmentación','Implantación','Organogénesis','Periodo fetal']],['Atención inmediata del recién nacido',['Secar y estimular','Contacto piel con piel','Pinzar y cortar el cordón','Iniciar lactancia']],['Camino del espermatozoide',['Vagina','Cuello uterino','Útero','Trompa de Falopio']]];
+function ord(){let r=0,sc=0;const nx=()=>{if(r>=SETS.length){best('ord',sc);return endp(`<h2>🔢 ¡Procesos dominados!</h2><p>${sc} pts</p>`,ord)}
+const[s,L]=SETS[r];let k=0;$('#stage').innerHTML=`<div class="p" style="margin:auto"><h3>${s}</h3><p>Toca en el orden correcto · nivel ${r+1}/${SETS.length} · ${sc} pts</p><div class="o">${sh(L).map(x=>`<button class="b">${x}</button>`).join('')}</div></div>`;
+document.querySelectorAll('.o .b').forEach(b=>b.onclick=()=>{if(b.textContent==L[k]){k++;b.classList.add('g');b.disabled=1;b.textContent=k+'. '+b.textContent;sc+=10;add(10);ok();if(k==L.length){r++;setTimeout(nx,700)}}else{ko();sc=Math.max(0,sc-5);b.classList.add('r');setTimeout(()=>b.classList.remove('r'),400)}})};nx()}
+const EM=['🤰','👶','🍼','🩺','💉','💊','🏥','🚑','🩸','🧬','🔬','🌡️','🧸','👩‍⚕️','🫀','🦠'];
+function mem(n=1){const np=[6,8,10,12][n-1],cl=[4,4,5,6][n-1],s=sh(EM).slice(0,np),d=sh([...s,...s]),tk=T;let o=[],m=0,f=0,lk=1,c=[7,6,5,4][n-1];
+$('#stage').innerHTML=`<p id="mv" style="margin:6px 0;text-align:center;font-weight:700"></p><div id="mg" style="grid-template-columns:repeat(${cl},1fr)">${d.map(e=>`<button class="b" style="font-size:clamp(24px,6.5vw,42px)">${e}</button>`).join('')}</div>`;
+const bs=[...document.querySelectorAll('#mg .b')],cd=()=>{if(tk!=T)return;if(c<=0){bs.forEach(b=>b.textContent='✨');lk=0;$('#mv').textContent='Nivel '+n+'/4 · Movimientos: 0 · ¡Encuentra las parejas!';return}$('#mv').textContent='👀 Nivel '+n+' · Memoriza las imágenes: '+c--;setTimeout(cd,1000)};cd();
+bs.forEach((b,i)=>b.onclick=()=>{if(lk||b.disabled||o.includes(i))return;b.textContent=d[i];o.push(i);if(o.length<2)return;m++;$('#mv').textContent='Nivel '+n+'/4 · Movimientos: '+m;const[a,z]=o;o=[];
+if(d[a]==d[z]){[a,z].forEach(q=>{bs[q].classList.add('g');bs[q].disabled=1});ok();add(15);if(++f==np){const nt=m<=np*1.6?20:m<=np*2.4?18:16;best('mem',n);setTimeout(()=>endp(`<h2>🃏 ¡Nivel ${n} completo!</h2><p>${m} movimientos · Nota: ${nt}/20</p>`,n<4?()=>mem(n+1):()=>mem(1),n<4?'Siguiente nivel ▶':'Jugar otra vez'),700)}}
+else{ko();lk=1;setTimeout(()=>{if(tk!=T)return;[a,z].forEach(q=>bs[q].textContent='✨');lk=0},900)}})}
+function hos(){const[x,P]=cv(),PE=['👩‍⚕️','👨‍⚕️','🧑‍⚕️','👩','👨','👵','👴','🧒','🧑‍🦽','👩‍🦰','🧔','🧑‍🔬'],DC=[[110,190,'🛏️'],[720,210,'🛏️'],[300,480,'🪴'],[800,500,'🛏️'],[520,160,'🪴']];let r=0,t,tm,pp,sc=0,lv=3,fl=0;
+const init=()=>{const n=14+r*7+DF*4,s=34-Math.min(r,6)*2,mv=()=>r>2?rf(-1,1)*(30+r*8):0;pp=[];for(let i=0;i<n;i++)pp.push({x:rf(30,870),y:rf(130,530),e:PE[R(0,PE.length-1)],v:mv(),s});pp.push({x:rf(30,870),y:rf(130,530),e:'🤰',v:mv(),s,T:1});pp=sh(pp);t=tm=Math.max(10,28-r*2-DF*2)};init();
+loop(dt=>{t-=dt;fl=Math.max(0,fl-dt);pp.forEach(o=>{o.x+=o.v*dt;if(o.x<20||o.x>880)o.v*=-1});
+if(P.d){P.d=0;const h=[...pp].reverse().find(o=>Math.hypot(o.x-P.x,o.y-P.y)<o.s*.7);
+if(h&&h.T){const g=Math.round(30+t*5);sc+=g;add(g);ok();r++;if(r>=8){best('hos',sc);return endp(`<h2>🏥 ¡Encontraste a las 8 gestantes!</h2><p>${sc} pts · Nota: ${lv==3?20:lv==2?18:16}/20</p>`,hos)}init()}else if(h){ko();t-=3;fl=.4}}
+if(t<=0){lv--;ko();if(lv<=0){best('hos',sc);return endp(`<h2>⏰ Se acabó el tiempo</h2><p>${sc} pts</p>`,hos)}init()}
+x.fillStyle='#e0f2fe';x.fillRect(0,0,900,560);for(let i=0;i<15;i++)for(let j=2;j<10;j++){x.fillStyle=(i+j)%2?'#f1f5f9':'#dbeafe';x.fillRect(i*60,j*60-20,60,60)}
+x.font='60px serif';x.textAlign='center';DC.forEach(d=>x.fillText(d[2],d[0],d[1]));
+rr(x,0,0,900,80,0,'#0ea5e9');tx(x,'🏥 Encuentra a la 🤰 embarazada',450,40,'#fff',24,'center');tx(x,'Nivel '+(r+1)+'/8 · '+'❤'.repeat(lv)+' · '+sc+' pts',450,68,'#e0f2fe',15,'center');
+rr(x,10,84,880*Math.max(0,t/tm),8,4,t<5?'#ef4444':'#22c55e');
+pp.forEach(o=>{x.font=o.s+'px serif';x.textAlign='center';x.fillText(o.e,o.x,o.y)});
+if(fl>0){x.fillStyle='#ef444455';x.fillRect(0,0,900,560)}})}
+const nq=c=>{let P=B.map((_,i)=>i).filter(i=>!c||c.includes(B[i][0])),F=P.filter(i=>!UQ.has(i));if(!F.length){P.forEach(i=>UQ.delete(i));F=P}const i=F[R(0,F.length-1)];UQ.add(i);return B[i]};
+const TR=[['🔇 Silencio'],['🌟 Magia',230,'triangle',[72,76,79,84,79,76,72,67,74,77,81,86,81,77,74,69],[48,0,0,0,53,0,0,0,55,0,0,0,48,0,0,0]],['🎉 Fiesta',160,'square',[67,67,72,0,67,64,60,0,65,65,69,0,65,62,59,0],[36,0,43,0,36,0,43,0,41,0,48,0,41,0,48,0]],['🚀 Aventura',190,'sawtooth',[69,72,76,72,69,72,77,76,74,77,81,77,74,72,71,0],[45,0,45,0,41,0,41,0,43,0,43,0,40,0,40,0]],['🌙 Relax',420,'sine',[60,64,67,72,67,64,60,0,62,65,69,74,69,65,62,0],[36,0,0,0,41,0,0,0,43,0,0,0,36,0,0,0]]];
+let MU=0,mt;const fq=n=>440*2**((n-69)/12);
+const music=()=>{clearInterval(mt);$('#mu').textContent=TR[MU][0];if(!MU)return;const[,ms,w,m,b]=TR[MU];let i=0;mt=setInterval(()=>{const a=m[i%16],c=b[i%16];if(a)snd(fq(a),ms/1000*.9,w,.025);if(c)snd(fq(c),ms/1000*1.8,'triangle',.05);i++},ms)};
+$('#mu').onclick=()=>{MU=(MU+1)%TR.length;music()};
+addEventListener('pointerdown',e=>{const s=document.createElement('i');s.textContent=['✨','⭐','💫'][R(0,2)];s.style.cssText=`position:fixed;left:${e.clientX-10}px;top:${e.clientY-10}px;pointer-events:none;z-index:99;font-style:normal;animation:fl 1s forwards`;document.body.append(s);setTimeout(()=>s.remove(),1000)});
+function login(){hud();$('#back').style.display='none';let u={};try{u=JSON.parse(localStorage.ou||'{}')}catch(e){}
+$('#stage').innerHTML=`<div class="p" style="margin:30px auto;text-align:center"><div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:var(--a)">UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD DEL CUSCO</div><svg viewBox="0 0 240 130" width="210" style="filter:drop-shadow(0 0 8px #22e5ff) drop-shadow(0 0 22px #ff2fa8)"><path d="M60 20Q30 20 18 70Q8 118 32 118Q48 118 62 96L178 96Q192 118 208 118Q232 118 222 70Q210 20 180 20Z" fill="#0b1030" stroke="#22e5ff" stroke-width="3"/><rect x="100" y="30" width="40" height="22" rx="4" fill="#0e1a4a" stroke="#ff2fa8" stroke-width="2"/><path d="M55 40h10v7h7v10h-7v7h-10v-7h-7v-10h7z" fill="#22e5ff"/><circle cx="180" cy="40" r="6" fill="none" stroke="#ff2fa8" stroke-width="3"/><circle cx="192" cy="52" r="6" fill="none" stroke="#22e5ff" stroke-width="3"/><circle cx="180" cy="64" r="6" fill="none" stroke="#a78bfa" stroke-width="3"/><circle cx="168" cy="52" r="6" fill="none" stroke="#34d399" stroke-width="3"/><circle cx="96" cy="86" r="12" fill="#0e1a4a" stroke="#22e5ff" stroke-width="3"/><circle cx="144" cy="86" r="12" fill="#0e1a4a" stroke="#ff2fa8" stroke-width="3"/></svg><div style="font-size:30px">🤰🩺👶</div><h2 class="neon">Obstetricia Arcade</h2><div style="font-size:12px;color:var(--m)">Autora</div><div style="font-size:clamp(15px,4vw,20px);font-weight:800;line-height:1.3">MARICRUZ JIMENA CASTILLO YUPANQUI</div><hr style="border:0;border-top:1px solid var(--bd);width:70%;margin:0 auto"><p style="color:var(--m)">Crea tu perfil de obstetra</p><input class="in" id="nu" maxlength="18" placeholder="Tu nombre o apodo" value="${u.n||''}"><input class="in" id="lu" maxlength="22" placeholder="De dónde eres (lugar o país)" value="${u.l||''}"><button class="b" style="text-align:center;background:#0ea5e9;color:#fff" id="go">▶ Entrar al hospital</button></div>`;
+$('#go').onclick=()=>{S.u=($('#nu').value.trim()||'Obstetra').replace(/[<>&"]/g,'');S.l=$('#lu').value.trim().replace(/[<>&"]/g,'');try{localStorage.ou=JSON.stringify({n:S.u,l:S.l})}catch(e){}MU=1;music();hud();menu()}}
+addEventListener('keydown',e=>{if(RC&&!e.repeat)RC(e.key.toLowerCase())});
+$('#lights').innerHTML=[...Array(30)].map((_,i)=>`<i style="color:hsl(${i*37},90%,60%);background:currentColor;animation-delay:${i%5*.3}s"></i>`).join('');
+
+const IM={
+utero:'<defs><radialGradient id="u1" cx=".5" cy=".35" r=".75"><stop offset="0" stop-color="#ffb4c6"/><stop offset=".6" stop-color="#e8527a"/><stop offset="1" stop-color="#9f1239"/></radialGradient><radialGradient id="u2" cx=".4" cy=".35"><stop offset="0" stop-color="#fff3c4"/><stop offset="1" stop-color="#f0a020"/></radialGradient></defs><path d="M78 58Q50 30 30 68M122 58Q150 30 170 68" stroke="#f472b6" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M100 38C72 38 62 66 66 98C70 130 82 150 100 164C118 150 130 130 134 98C138 66 128 38 100 38Z" fill="url(#u1)"/><path d="M100 66L82 98L100 126L118 98Z" fill="#7a0f2e" opacity=".55"/><path d="M100 164V190" stroke="#e8527a" stroke-width="14" stroke-linecap="round"/><ellipse cx="26" cy="78" rx="14" ry="10" fill="url(#u2)"/><ellipse cx="174" cy="78" rx="14" ry="10" fill="url(#u2)"/>',
+ovulo:'<defs><radialGradient id="o1" cx=".4" cy=".35"><stop offset="0" stop-color="#fff1f5"/><stop offset=".55" stop-color="#fda4c0"/><stop offset="1" stop-color="#e11d62"/></radialGradient><radialGradient id="o2" cx=".4" cy=".4"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#d97706"/></radialGradient></defs><circle cx="100" cy="100" r="90" fill="none" stroke="#fb7185" stroke-width="8" stroke-dasharray="2 9" stroke-linecap="round" opacity=".85"/><circle cx="100" cy="100" r="74" fill="url(#o1)"/><circle cx="100" cy="100" r="40" fill="url(#o2)" opacity=".85"/><circle cx="100" cy="100" r="14" fill="#7c2d12"/><circle cx="82" cy="80" r="11" fill="#fff" opacity=".35"/>',
+esperma:'<defs><radialGradient id="e1" cx=".35" cy=".35"><stop offset="0" stop-color="#e0f2fe"/><stop offset="1" stop-color="#0ea5e9"/></radialGradient></defs><path d="M84 84Q48 100 64 130T42 172T62 194" stroke="#7dd3fc" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="112" cy="62" rx="38" ry="26" fill="url(#e1)" transform="rotate(35 112 62)"/><ellipse cx="124" cy="52" rx="16" ry="10" fill="#fff" opacity=".45" transform="rotate(35 124 52)"/>',
+placenta:'<defs><radialGradient id="p1" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#c2415d"/><stop offset=".7" stop-color="#8b1d3b"/><stop offset="1" stop-color="#4c0f24"/></radialGradient></defs><ellipse cx="100" cy="92" rx="84" ry="70" fill="url(#p1)"/><g stroke="#f9a8b8" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"><path d="M100 100L50 60M100 100L40 105M100 100L60 150M100 100L100 25M100 100L150 55M100 100L165 100M100 100L145 150M100 100L100 160M75 80L58 82M125 80L142 80M80 125L70 138M122 125L135 138"/></g><path d="M100 100C122 132 80 150 110 172C130 186 100 196 90 196" stroke="#e8a3b0" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M100 100C122 132 80 150 110 172C130 186 100 196 90 196" stroke="#c0546e" stroke-width="3" stroke-dasharray="6 6" fill="none"/>',
+test:'<defs><linearGradient id="t1" x1="0" x2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient></defs><g transform="rotate(-30 100 100)"><rect x="76" y="12" width="48" height="178" rx="18" fill="url(#t1)"/><rect x="84" y="28" width="32" height="14" rx="3" fill="#94a3b8"/><rect x="84" y="62" width="32" height="48" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="2"/><rect x="86" y="76" width="28" height="5" fill="#ec4899"/><rect x="86" y="94" width="28" height="5" fill="#ec4899"/><rect x="82" y="150" width="36" height="34" rx="12" fill="#38bdf8"/></g>',
+pinard:'<defs><linearGradient id="n1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e2bd"/><stop offset="1" stop-color="#a8742c"/></linearGradient></defs><g transform="rotate(-30 100 100)"><path d="M34 60L150 90L150 110L34 140Z" fill="url(#n1)"/><ellipse cx="34" cy="100" rx="12" ry="40" fill="#6b4318"/><ellipse cx="34" cy="100" rx="8" ry="34" fill="#3b240d"/><ellipse cx="156" cy="100" rx="8" ry="24" fill="#d9b87a" stroke="#8a5a1f" stroke-width="3"/></g>',
+eco:'<defs><radialGradient id="s1" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#e2e8f0"/><stop offset=".5" stop-color="#475569"/><stop offset="1" stop-color="#0f172a"/></radialGradient></defs><rect x="6" y="10" width="188" height="180" rx="16" fill="#0b1220" stroke="#38bdf8" stroke-width="3"/><path d="M100 20L28 170Q100 196 172 170Z" fill="url(#s1)"/><ellipse cx="100" cy="116" rx="36" ry="30" fill="#0b1220" opacity=".85"/><circle cx="90" cy="106" r="16" fill="#cbd5e1" opacity=".92"/><path d="M104 120C120 114 130 126 122 136C110 144 96 138 100 124Z" fill="#94a3b8"/><g fill="#fff" opacity=".22"><circle cx="70" cy="60" r="2"/><circle cx="120" cy="80" r="2"/><circle cx="60" cy="140" r="2"/><circle cx="140" cy="150" r="2"/><circle cx="100" cy="50" r="2"/></g>',
+cinta:'<circle cx="70" cy="108" r="54" fill="#1e293b" stroke="#facc15" stroke-width="7"/><circle cx="70" cy="108" r="20" fill="#facc15"/><circle cx="70" cy="108" r="7" fill="#1e293b"/><rect x="118" y="98" width="78" height="26" rx="2" fill="#fde047"/><path d="M128 98v10M138 98v16M148 98v10M158 98v16M168 98v10M178 98v16M188 98v10" stroke="#111827" stroke-width="2"/><path d="M118 124Q96 124 90 112" stroke="#fde047" stroke-width="8" fill="none"/>',
+feto:'<circle cx="100" cy="100" r="88" fill="#7dd3fc" opacity=".25" stroke="#7dd3fc" stroke-width="4"/><circle cx="100" cy="100" r="68" fill="#bae6fd" opacity=".28"/><text x="100" y="134" font-size="100" text-anchor="middle">👶</text>'
+};
+const img=(k,s=150)=>IM[k]?`<svg viewBox="0 0 200 200" style="width:${s}px;height:${s}px;filter:drop-shadow(0 0 12px #22e5ff99)">${IM[k]}</svg>`:`<span style="font-size:${s*.72}px;line-height:1.1;filter:drop-shadow(0 0 12px #22e5ff99)">${k}</span>`;
+const mini=v=>v?(v.startsWith('IM:')?img(v.slice(3),30):'<span style="font-size:26px;vertical-align:middle">'+v+'</span>'):'∅ (nada)';
+
+/* ---------- Adivina quién soy ---------- */
+const QW=[
+['utero','Útero','Soy un órgano muscular con forma de pera invertida.','Aquí crece el bebé durante todo el embarazo.','Mi capa interna se llama endometrio.'],
+['ovulo','Óvulo','Soy la célula sexual femenina, la más grande del cuerpo.','Nazco en el ovario y salgo una vez al mes.','Si un espermatozoide me encuentra, formamos un cigoto.'],
+['esperma','Espermatozoide','Soy la célula sexual masculina, diminuta y con cola.','Uso mi flagelo para nadar hacia la trompa de Falopio.','Llevo 23 cromosomas, con una X o una Y.'],
+['placenta','Placenta','Solo existo durante el embarazo.','Llevo oxígeno y alimento al bebé a través de un cordón.','Salgo después del bebé, en el alumbramiento.'],
+['feto','Feto','Vivo dentro de una bolsa llena de líquido.','Me llaman así desde la semana 9 de gestación.','Mi corazón late entre 110 y 160 veces por minuto.'],
+['test','Prueba de embarazo','Soy un objeto pequeño con una ventanita.','Detecto una hormona en la orina.','Dos rayitas suelen significar positivo.'],
+['cinta','Cinta métrica','Soy flexible y estoy llena de números.','Me usan para medir la altura uterina.','Voy del pubis hasta el fondo del útero.'],
+['pinard','Estetoscopio de Pinard','Parezco una trompetita de madera o metal.','Me apoyan sobre la panza de la gestante.','Sirvo para escuchar los latidos del bebé.'],
+['eco','Ecografía','Soy una imagen en tonos de gris.','Funciono con ondas de sonido, no con radiación.','Me usan para ver al bebé dentro del útero.'],
+['🤱','Lactancia materna','Soy el mejor alimento del recién nacido.','Mi primera leche se llama calostro.','Se recomienda que sea exclusiva durante los primeros 6 meses.'],
+['💉','Oxitocina','Soy una hormona que también se usa como medicamento.','Hago que el útero se contraiga.','Ayudo a prevenir la hemorragia posparto.'],
+['🧬','Cromosomas','Vivo en el núcleo de las células.','Una célula normal tiene 46 de mí y un gameto tiene 23.','En la mujer, mi par sexual es XX.']];
+function quien(){const N=8,L=sh(QW).slice(0,N),tk=T;let i=0,c=0,lv=3,sc=0;
+const nx=()=>{if(i>=N||lv<=0){best('quien',sc);return endp(`<h2>🕵️ ${c}/${N} identificados</h2><p>Nota: ${Math.round(c/N*20)}/20 · ${sc} pts</p>`,quien)}
+const q=L[i],op=sh([q[1],...sh(QW.filter(z=>z!=q)).slice(0,3).map(z=>z[1])]);let k=1,d=0;
+const draw=()=>{$('#stage').innerHTML=`<div class="p" style="margin:auto;text-align:center"><small>🕵️ Adivina quién soy · ${i+1}/${N} · ${'❤'.repeat(lv)} · ${sc} pts</small><div class="im" style="filter:blur(${[0,18,7,0][k]}px);transition:filter .6s">${img(q[0],170)}</div><div style="text-align:left;color:var(--m)">${q.slice(2,2+k).map((z,j)=>`<p>🔎 <b>Pista ${j+1}:</b> ${z}</p>`).join('')}</div><div class="o">${op.map(x=>`<button class="b">${x}</button>`).join('')}</div>${k<3?'<button class="b" id="pi" style="text-align:center">💡 Otra pista (menos puntos)</button>':''}</div>`;
+const pi=$('#pi');if(pi)pi.onclick=()=>{k++;draw()};
+document.querySelectorAll('.o .b').forEach(b=>b.onclick=()=>{if(d)return;d=1;const g=b.textContent==q[1],pt=[0,30,20,10][k];document.querySelectorAll('.o .b').forEach(x=>{x.disabled=1;if(x.textContent==q[1])x.classList.add('g')});$('.im').style.filter='none';if(pi)pi.style.display='none';if(g){c++;sc+=pt;add(pt);ok()}else{b.classList.add('r');lv--;ko()}setTimeout(()=>{if(tk!=T)return;i++;nx()},1500)})};
+draw()};nx()}
+
+/* ---------- ¿Qué cambió? ---------- */
+const PO=['🩺','💉','🍼','🧸','🌡️','💊','🩸','🧬','🔬','🩹','🧪','👶','🤰','🤱','🏥','🚑','IM:utero','IM:ovulo','IM:placenta','IM:test','IM:cinta','IM:pinard','IM:eco','IM:esperma'];
+function cam(n=1){const tk=T,cl=[3,3,4,4][n-1],rw=[2,3,3,4][n-1],N=5,TS=Math.max(3,Math.round([6,7,8,9][n-1]/D()));let r=0,c=0;
+const cell=v=>v?(v.startsWith('IM:')?img(v.slice(3),56):`<span style="font-size:clamp(24px,7vw,42px)">${v}</span>`):'';
+const grid=(a,f)=>`<div class="cg" style="grid-template-columns:repeat(${cl},1fr)">${a.map((v,i)=>`<button class="b cl2" data-i="${i}">${f?f(v):cell(v)}</button>`).join('')}</div>`;
+const rnd=()=>{if(r>=N){const p=c>=4;best('cam',c*10+n);return endp(`<h2>🔍 Nivel ${n}/4 · ${c}/${N} aciertos</h2><p>Nota: ${Math.round(c/N*20)}/20</p>${p||n>=4?'':'<p>Necesitas 4 aciertos para subir de nivel</p>'}`,p&&n<4?()=>cam(n+1):()=>cam(n),p&&n<4?'Siguiente nivel ▶':'Reintentar')}
+const sz=cl*rw,A=sh(PO).slice(0,sz),Bg=[...A],ty=R(0,2),i=R(0,sz-1);let ch=[i],ex='',t=TS,dn=0;
+if(ty==0){const w=sh(PO.filter(z=>!A.includes(z)))[0];Bg[i]=w;ex=`${mini(A[i])} cambió por ${mini(w)}`}
+else if(ty==1){Bg[i]='';ex=`${mini(A[i])} desapareció`}
+else{let j;do{j=R(0,sz-1)}while(j==i);Bg[i]=A[j];Bg[j]=A[i];ch=[i,j];ex=`${mini(A[i])} y ${mini(A[j])} intercambiaron de lugar`}
+const hd=m=>`<small>🔍 Nivel ${n}/4 · Ronda ${r+1}/${N} · ✔ ${c}</small><h3>${m}</h3>`;
+const find=()=>{if(tk!=T)return;$('#stage').innerHTML=`<div class="p" style="margin:auto;text-align:center">${hd('¿Qué cambió? Toca el cambio')}${grid(Bg)}<div id="ex"></div></div>`;
+document.querySelectorAll('.cl2').forEach(b=>b.onclick=()=>{if(dn)return;dn=1;const k=+b.dataset.i,g=ch.includes(k);if(g){c++;add(20);ok()}else ko();document.querySelectorAll('.cl2').forEach((x,ix)=>{if(ch.includes(ix))x.classList.add('g')});if(!g)b.classList.add('r');$('#ex').innerHTML=(g?'✅ ':'❌ ')+'Cambio: '+ex;setTimeout(()=>{if(tk!=T)return;r++;rnd()},2200)})};
+const blank=()=>{if(tk!=T)return;$('#stage').innerHTML=`<div class="p" style="margin:auto;text-align:center">${hd('😌 Ahora…')}${grid(A,()=>'✨')}</div>`;setTimeout(find,1200)};
+const show=()=>{if(tk!=T)return;if(t<=0)return blank();$('#stage').innerHTML=`<div class="p" style="margin:auto;text-align:center">${hd('👀 Memoriza: '+t)}${grid(A)}</div>`;t--;setTimeout(show,1000)};show()};rnd()}
+
+/* ---------- Acertijos ---------- */
+const mk=(t,a,w,im)=>{const q=['🧩 Acertijo',t,a,...w];q.img=im?img(im,120):'';return q};
+const RD=[
+mk('Soy redonda y pequeñita, nazco en el ovario cada mes; si un nadador me encuentra, un bebé podría empezar a crecer. ¿Qué soy?','Óvulo',['Espermatozoide','Placenta','Útero'],'ovulo'),
+mk('Tengo dos arterias y una vena, y al bebé con su mamá encadeno. ¿Qué soy?','Cordón umbilical',['Trompa de Falopio','Vena cava','Cuello uterino'],'placenta'),
+mk('Soy amarilla y espesa, la primera leche; doy defensas al recién nacido. ¿Qué soy?','Calostro',['Meconio','Vérnix','Lanugo'],'🤱'),
+mk('Soy un saquito con agüita tibia donde el bebé flota feliz. ¿Qué soy?','Saco amniótico',['Placenta','Vejiga','Útero'],'feto'),
+mk('Soy la primera caca del bebé: negra y pegajosa; tranquila, es normal. ¿Qué soy?','Meconio',['Calostro','Vérnix','Lanugo'],'👶'),
+mk('Cuando llego a diez, el cuello ya no es obstáculo y el bebé está por salir. ¿Qué soy?','Dilatación completa',['Alumbramiento','Puerperio','Episiotomía'],'🏥'),
+mk('De madera o metal, me apoyan en la panza para oír al bebé. ¿Qué soy?','Estetoscopio de Pinard',['Tensiómetro','Termómetro','Cinta métrica'],'pinard'),
+mk('Dos rayitas o una sola decidirán la noticia; en la orina trabajo. ¿Qué soy?','Prueba de embarazo',['Ecografía','Papanicolaou','Hemograma'],'test'),
+mk('Con ondas que no se oyen, dibujo al bebé en una pantalla. ¿Qué soy?','Ecografía',['Radiografía','Hemograma','Test de Apgar'],'eco'),
+mk('Soy hormona del amor y de las contracciones, y ayudo a que baje la leche. ¿Qué soy?','Oxitocina',['Prolactina','Insulina','Cortisol'],'💉'),
+mk('Nazco con el bebé pero salgo después de él; no soy su hermana, pero lo alimenté. ¿Qué soy?','Placenta',['Cordón umbilical','Calostro','Meconio'],'placenta'),
+mk('Soy un número de 0 a 10 que se mide al minuto y a los cinco; mientras más alto, mejor está el recién nacido. ¿Qué soy?','Test de Apgar',['Partograma','Altura uterina','Regla de Naegele'],'👶'),
+mk('Dura unos 28 días y no soy un mes; cuando mi sangrado no llega, puede haber un bebé en camino. ¿Qué soy?','Ciclo menstrual',['Puerperio','Lactancia','Alumbramiento'],'utero'),
+mk('Mis tres partes se llaman trimestres y juntas suman unas 40 semanas. ¿Qué soy?','Embarazo a término',['Puerperio','Ciclo menstrual','Lactancia'],'🤰'),
+mk('Soy tan pequeño que corro con cola; llevo 23 cromosomas y a un óvulo quiero llegar. ¿Qué soy?','Espermatozoide',['Óvulo','Cigoto','Mórula'],'esperma')];
+const acer=(n=1)=>qrun(()=>sh(RD.slice((n-1)*5,n*5)),'acer','🧩 Acertijos · Nivel '+n+'/3',n<3?()=>acer(n+1):null);
+
+/* ---------- Mitos y realidades ---------- */
+const MV=[
+['Las embarazadas deben comer por dos.',0,'Necesitan comer mejor, no el doble: solo unas 300 a 450 kcal extra en el segundo y tercer trimestre.','🍽️'],
+['El ácido fólico antes y al inicio del embarazo ayuda a prevenir defectos del tubo neural.',1,'Por eso se recomienda tomarlo desde antes de la concepción y durante el primer trimestre.','💊'],
+['El calostro, la primera leche, protege al bebé con defensas.',1,'Es rico en anticuerpos y por eso se dice que es la primera vacuna natural.','🤱'],
+['Una gestante sana no puede hacer ningún tipo de ejercicio.',0,'Si no hay contraindicación, el ejercicio moderado es recomendable y beneficia a la madre y al bebé.','🧘'],
+['La forma de la barriga permite saber si será niño o niña.',0,'La forma depende del cuerpo de la madre, de los músculos y de la posición del bebé, no de su sexo.','🤰'],
+['Dar de lactar evita siempre un nuevo embarazo.',0,'La lactancia reduce la fertilidad solo bajo ciertas condiciones, pero no es un método seguro por sí sola.','🍼'],
+['Las ecografías durante el embarazo dañan al bebé.',0,'Usan ondas de sonido, no radiación, y son seguras cuando las indica el personal de salud.','eco'],
+['El cordón umbilical normal tiene 2 arterias y 1 vena.',1,'La vena lleva sangre oxigenada al bebé y las arterias devuelven la sangre a la placenta.','placenta'],
+['El trabajo de parto siempre empieza con la ruptura de la bolsa de aguas.',0,'Lo más frecuente es que empiece con contracciones; la bolsa puede romperse antes, durante o después.','💧'],
+['La cesárea es siempre más segura que el parto vaginal.',0,'Es una cirugía con riesgos propios y debe indicarse solo cuando hay una razón médica.','🏥'],
+['El contacto piel con piel inmediato ayuda al recién nacido a mantener su temperatura.',1,'Además favorece el apego y el inicio temprano de la lactancia.','👶'],
+['Tomar un poquito de alcohol durante el embarazo es totalmente seguro.',0,'No se conoce una cantidad segura de alcohol durante el embarazo.','🍷'],
+['El control prenatal debe comenzar apenas se sospecha el embarazo.',1,'Un control temprano permite detectar riesgos y dar suplementos a tiempo.','🩺'],
+['Los antojos indican exactamente lo que le falta al cuerpo de la gestante.',0,'Los antojos no son un diagnóstico de deficiencias; lo importante es una alimentación variada.','🍓'],
+['El sulfato de magnesio se usa para prevenir convulsiones en la eclampsia.',1,'Es el fármaco de elección en la preeclampsia severa y la eclampsia.','💉'],
+['El bebé puede oír sonidos y la voz de su madre antes de nacer.',1,'La audición se desarrolla en la segunda mitad del embarazo.','🎶'],
+['Un eclipse durante el embarazo causa manchas o malformaciones en el bebé.',0,'Es un mito popular sin ninguna base científica.','🌑'],
+['Todas las gestantes pueden viajar en avión sin ninguna restricción en cualquier semana.',0,'Muchas aerolíneas ponen límites cerca del final del embarazo; lo ideal es consultar al personal de salud.','✈️']];
+function mito(n=1){const N=[6,8,10][n-1],L=sh(MV).slice(0,N),TL=[18,14,11][n-1];let i=0,c=0,st=0,sc=0;
+const nx=()=>{clearInterval(qt);if(i>=N){best('mito',sc);const p=c/N>=.7;return endp(`<h2>Nota: ${Math.round(c/N*20)}/20 ${c==N?'🏆':''}</h2><p>${c}/${N} correctas · ${sc} pts</p>${p||n>=3?'':'<p>Necesitas 70% para subir de nivel</p>'}`,p&&n<3?()=>mito(n+1):()=>mito(n),p&&n<3?'Siguiente nivel ▶':'Reintentar')}
+const q=L[i];let t=TL,d=0;
+$('#stage').innerHTML=`<div class="p" style="margin:auto;text-align:center"><small>🧐 Nivel ${n}/3 · ${i+1}/${N} · 🔥${st} · ⏱ <b id="mt">${t}</b>s · ${sc} pts</small><div class="im">${img(q[3],140)}</div><h3>${q[0]}</h3><div class="row" style="justify-content:center"><button class="b tfb" data-v="1" style="flex:1;text-align:center;background:linear-gradient(135deg,#065f46,#047857)">✅ ES VERDAD</button><button class="b tfb" data-v="0" style="flex:1;text-align:center;background:linear-gradient(135deg,#9f1239,#be123c)">❌ ES MENTIRA</button></div><div id="ex"></div></div>`;
+const fin=v=>{if(d)return;d=1;clearInterval(qt);const g=v==(q[1]?1:0);document.querySelectorAll('.tfb').forEach(x=>x.disabled=1);if(g){c++;st++;const p=10+Math.min(st,5)*3+Math.ceil(t/3);sc+=p;add(p);ok()}else{st=0;ko()}
+$('#ex').innerHTML=`<h3 style="color:${q[1]?'#4ade80':'#f87171'}">${q[1]?'✅ REALIDAD':'❌ MITO'} ${g?'· ¡Correcto!':v<0?'· ¡Se acabó el tiempo!':'· Incorrecto'}</h3><p>${q[2]}</p><button class="b" id="sig" style="text-align:center">Siguiente ▶</button>`;$('#sig').onclick=()=>{i++;nx()}};
+document.querySelectorAll('.tfb').forEach(b=>b.onclick=()=>fin(+b.dataset.v));
+qt=setInterval(()=>{if(d)return;t--;const e=$('#mt');if(e)e.textContent=t;if(t<=0)fin(-1)},1000)};nx()}
+
+/* ---------- Rompecabezas ---------- */
+function puz(n=1){const k=[2,3,4][n-1],N=k*k,key=['utero','ovulo','placenta'][n-1];
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><radialGradient id="zb" cx=".5" cy=".45" r=".8"><stop offset="0" stop-color="#312e81"/><stop offset="1" stop-color="#050a24"/></radialGradient></defs><rect width="200" height="200" fill="url(#zb)"/><g fill="#a5f3fc" opacity=".7"><circle cx="18" cy="24" r="1.6"/><circle cx="170" cy="30" r="1.2"/><circle cx="30" cy="172" r="1.4"/><circle cx="176" cy="174" r="1.8"/><circle cx="150" cy="12" r="1"/><circle cx="12" cy="110" r="1.2"/></g>${IM[key]}</svg>`;
+const U='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+const od=sh([...Array(N).keys()]);const ul=new Set,pl=new Set;let sel=-1,bad=0;
+const ps=(e,i)=>{e.style.backgroundImage=U;e.style.backgroundSize=`${k*100}% ${k*100}%`;e.style.backgroundPosition=`${(i%k)/(k-1)*100}% ${Math.floor(i/k)/(k-1)*100}%`};
+const draw=()=>{$('#stage').innerHTML=`<div class="p" style="margin:auto;text-align:center"><small>🧩 Rompecabezas · Nivel ${n}/3 · ${pl.size}/${N} piezas · errores ${bad}</small><div class="row" style="justify-content:center;align-items:center"><div class="pb" style="grid-template-columns:repeat(${k},1fr)">${[...Array(N).keys()].map(i=>`<div class="sl2${pl.has(i)?' ok':''}" data-s="${i}"></div>`).join('')}</div><div><small>Imagen guía</small><div class="gd"></div></div></div><p>${sel>=0?'👆 Toca el lugar donde va la pieza':'Toca una pieza 🔒, responde la pregunta y gana la pieza'}</p><div class="tr">${od.filter(i=>!pl.has(i)).map(i=>`<div class="pc${ul.has(i)?' un':''}${sel==i?' sel':''}" data-p="${i}">${ul.has(i)?'':'🔒'}</div>`).join('')}</div></div>`;
+document.querySelector('.gd').style.backgroundImage=U;
+document.querySelectorAll('.sl2').forEach(e=>{const i=+e.dataset.s;if(pl.has(i))ps(e,i);e.onclick=()=>{if(sel<0||pl.has(i))return;if(sel==i){pl.add(i);ul.delete(i);sel=-1;ok();add(10);draw();if(pl.size==N)setTimeout(()=>{if(tk!=T)return;const nt=Math.max(8,20-bad);best('puz',nt);endp(`<h2>🖼️ ¡Rompecabezas completo!</h2><p>Errores: ${bad} · Nota: ${nt}/20</p>`,n<3?()=>puz(n+1):()=>puz(1),n<3?'Siguiente nivel ▶':'Jugar otra vez')},1300)}else{ko();bad++;sel=-1;draw()}}});
+document.querySelectorAll('.pc').forEach(e=>{const i=+e.dataset.p;if(ul.has(i))ps(e,i);e.onclick=()=>{if(ul.has(i)){sel=sel==i?-1:i;draw()}else ask(nq(),r=>{if(tk!=T)return;if(r){ul.add(i);sel=i}else bad++;draw()},'🧩 Responde para ganar la pieza')}})};
+const tk=T;draw()}
+const HU=[190,310,265,205,330,170,285,215,320,180,295,235];
+const GAMES=[['quiz','⚡','Quiz y Guardia Obstétrica','5 niveles · teoría y casos · 50/50',quiz],['quien','🕵️','Adivina quién soy','Imágenes y pistas · 8 rondas',quien],['cam','🔍','¿Qué cambió?','4 niveles · memoria visual',cam],['acer','🧩','Acertijos','3 niveles · con imágenes',acer],['mito','🧐','Mitos y realidades','¿Verdad o mentira? · 3 niveles',mito],['puz','🖼️','Rompecabezas','Gana cada pieza respondiendo',puz],['amb','🚑','Ambulancia','5 niveles · lleva 10 gestantes',amb],['esp','🧬','Fecundación','5 niveles · nada hasta el óvulo',esp],['sopa','🔤','Sopa de Letras','4 niveles · diagonales e invertidas',sopa],['ord','🔢','Ordena el Proceso','4 niveles · ordena etapas',ord],['mem','🃏','Memoria','4 niveles · encuentra la pareja',mem],['hos','🏥','Encuentra a la gestante','8 niveles · búscala en el hospital',hos]];
+
+function menu(){stop();music();$('#back').style.display='none';$('#stage').innerHTML='<div style="text-align:center;margin:4px">Dificultad: <span class="dfs" style="justify-content:center">'+['🟢 Básico','🟡 Medio','🟠 Difícil','🔴 Experto'].map((d,i)=>`<button class="b${i+1==DF?' on':''}" data-d="${i+1}">${d}</button>`).join('')+'</span></div><div id="menu">'+GAMES.map(g=>`<div class="card" data-g="${g[0]}" style="background:linear-gradient(150deg,hsla(${HU[GAMES.indexOf(g)]},90%,24%,.95),#060a22);border:1px solid hsl(${HU[GAMES.indexOf(g)]},100%,62%);box-shadow:0 0 18px hsla(${HU[GAMES.indexOf(g)]},100%,60%,.5)"><i>${g[1]}</i><b>${g[2]}</b><br><small>${g[3]}</small><br><small>🏆 ${S.b[g[0]]||0}</small></div>`).join('')+'</div><div style="text-align:center;margin:18px 0 6px;font-size:12px;color:var(--m)">UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD DEL CUSCO<br><b>MARICRUZ JIMENA CASTILLO YUPANQUI</b></div>';
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{DF=+b.dataset.d;menu()});document.querySelectorAll('.card').forEach(c=>c.onclick=()=>{stop();$('#back').style.display='';GAMES.find(g=>g[0]==c.dataset.g)[4]()})}
+$('#back').onclick=menu;login();
+</script></body></html>
